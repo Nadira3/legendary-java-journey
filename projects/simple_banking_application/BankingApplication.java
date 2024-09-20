@@ -31,14 +31,13 @@ class BankAccount
 {
 	double balance = 0.00;
 	int amount;
-	Scanner myObj = new Scanner(System.in);
 
 	public void printOptions()
 	{
 		System.out.println("Welcome to the Simple Banking Application!\nPlease select an option:\n1. Deposit Money\n2. Withdraw Money\n3. View Balance\n4. Exit");
 	}
 
-	public boolean takeResponse(int response)
+	public boolean takeResponse(int response, Scanner myObj)
 	{
 		BankAction action = new BankAction();
 
@@ -81,7 +80,7 @@ public class BankingApplication
 			account.printOptions();
 			System.out.print("\nEnter your choice: ");
 			response = myObj.nextInt();
-			valid = account.takeResponse(response);
+			valid = account.takeResponse(response, myObj);
 			if (!valid)
 				break;
 		}
