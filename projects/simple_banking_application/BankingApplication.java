@@ -60,15 +60,10 @@ class BankAccount
 				System.out.println("Bye!");
 				break;
 			default:
-				System.out.println("Enter a valid option from 1 - 4");
+				System.out.println("Enter a valid option from 1 - 4\n");
 		}
 
 		return response != 4 ? true : false;
-	}
-
-	public boolean optionValidator(int num)
-	{
-		return num >= 1 && num <= 4 ? true : false;
 	}
 }
 
@@ -86,9 +81,6 @@ public class BankingApplication
 			account.printOptions();
 			System.out.print("Enter your choice: ");
 			response = myObj.nextInt();
-			valid = account.optionValidator(response);
-			if (!valid)
-				System.out.println("\nEnter a valid number from 1 - 4\n");
 			valid = account.takeResponse(response);
 			if (!valid)
 				break;
