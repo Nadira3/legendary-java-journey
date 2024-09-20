@@ -79,7 +79,7 @@ public class BankingApplication
 		while(valid) 
 		{
 			account.printOptions();
-			System.out.print("Enter your choice: ");
+			System.out.print("\nEnter your choice: ");
 			response = myObj.nextInt();
 			valid = account.takeResponse(response);
 			if (!valid)
