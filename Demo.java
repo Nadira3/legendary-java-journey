@@ -1,28 +1,29 @@
-class Calculator
+class Mobile 
 {
-	int a;
-
-	public int add(int n1, int n2)
-	{
-		System.out.println("Call me");
-		return n1 + n2;
-	}
-	// Method overloading
-	public double add(double n1, int n2)
-        {
-                System.out.println("Call me");
-                return n1 + n2;
-        }
+	static String name;
 }
-
 public class Demo
 {
 	public static void main(String a[])
 	{
 		int bv = 34, bz = 15;
-		Calculator calc = new Calculator();
+		int nums[][] = new int[3][4];
 
-		int result = calc.add(bv, bz);
-		System.out.println(result);
+		for(int n[] : nums)
+		{
+			for(int m: n)
+			{
+				int random = (int)(Math.random() * 10);
+				System.out.print(m + " ");
+			}
+			System.out.println();
+		}
 	}
+
 }
+
+// jagged array
+// array of objects
+// String methods
+// string constant pool
+// StringBuffer and methods
