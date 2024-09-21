@@ -1,57 +1,111 @@
 # QuizApp
 
 ## Overview
-QuizApp is a simple yet engaging application designed to help users test their knowledge on various topics through quizzes. Users can take quizzes, view their scores, and improve their knowledge in a fun way.
+QuizApp is a simple console-based quiz application designed to demonstrate basic Java programming concepts. The application allows users to take quizzes, track scores, and validate answers. It follows a layered architecture to ensure scalability, maintainability, and separation of concerns.
+
+## Project Architecture
+
+The project is structured into different layers, following best practices for modular development:
+
+1. **Presentation Layer (UI/CLI)**:
+   - Interacts with the user.
+   - Handles user input and displays output.
+   
+2. **Service Layer (Business Logic)**:
+   - Processes the quiz logic, such as tracking scores, validating answers, and managing quiz flow.
+   
+3. **Data Access Layer (Persistence)**:
+   - Manages the data (questions, answers, scores). This can later evolve to read from files, databases, or APIs.
+
+4. **Model Layer (Entities)**:
+   - Defines the core entities like `Question`, `Quiz`, and `User`.
+
+## Directory Structure
+
+```
+QuizApp/
+│
+├── src/
+│   ├── main/
+│   │   ├── java/
+│   │   │   ├── com/
+│   │   │   │   ├── precious/
+│   │   │   │   │   ├── quizapp/
+│   │   │   │   │   │   ├── QuizApp.java         # Main entry point for the application
+│   │   │   │   │   │   ├── controller/
+│   │   │   │   │   │   │   ├── QuizController.java  # Handles the flow of the quiz
+│   │   │   │   │   │   ├── service/
+│   │   │   │   │   │   │   ├── QuizService.java     # Handles quiz-related logic
+│   │   │   │   │   │   │   ├── QuestionService.java # Handles question-related logic
+│   │   │   │   │   │   ├── repository/
+│   │   │   │   │   │   │   ├── QuestionRepository.java # Access to question data
+│   │   │   │   │   │   ├── model/
+│   │   │   │   │   │   │   ├── Question.java     # Question model class
+│   │   │   │   │   │   │   ├── User.java         # User model class (optional)
+│   │   │   │   │   │   ├── utils/
+│   │   │   │   │   │   │   ├── Validator.java    # Utility class for validation functions
+│   ├── resources/                                # Store static files or configs
+│   └── test/                                     # Unit tests
+│
+├── README.md                                     # Project overview and instructions
+├── build.gradle / pom.xml                        # Project dependencies (Gradle or Maven)
+└── .gitignore                                    # Git ignore rules
+```
+
+## Class Descriptions
+
+### `QuizApp.java`
+- The entry point of the application that initializes the quiz and provides a command-line interface for users.
+
+### `QuizController.java`
+- Handles the interaction between the user and the application logic. Manages the flow of the quiz, user input, and output.
+
+### `QuizService.java`
+- Contains the core logic of the quiz, such as fetching questions, checking answers, and calculating the score.
+
+### `QuestionRepository.java`
+- Handles the data access layer for quiz questions. Initially, the questions will be hardcoded, but this can evolve to fetch data from external sources.
+
+### `Question.java`
+- A model class that defines the structure of a quiz question, including fields for the question text, options, and the correct answer.
 
 ## Features
-- **User-Friendly Interface:** Easy to navigate and use.
-- **Multiple Choice Questions:** Various topics and categories.
-- **Score Tracking:** Users can see their scores after each quiz.
-- **Timed Quizzes:** Option to take quizzes against the clock for added challenge.
-- **Feedback System:** Users receive instant feedback on their answers.
 
-## Technologies Used
-- **Java:** Core programming language for building the application.
-- **Scanner:** For user input handling.
-- **Java Collections:** To manage quiz questions and answers.
+- Add a layer of abstraction for better code organization and scalability.
+- Use the repository pattern to manage data (questions, answers, scores).
+- Modular design to enable easy extension and maintenance.
+- Input validation to prevent invalid entries.
 
 ## Getting Started
 
 ### Prerequisites
-- Java Development Kit (JDK) installed on your machine.
 
-### Installation
+- Java Development Kit (JDK) 8 or above.
+- A terminal or IDE to run the application.
+
+### How to Run the Application
+
 1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/quizapp.git
    ```
-2. Navigate to the project directory:
-   ```bash
-   cd quizapp
+   git clone https://github.com/precious-quizapp.git
    ```
-3. Compile the Java files:
-   ```bash
-   javac com/precious/quizapp/*.java
+2. Navigate to the project directory and compile:
+   ```
+   javac com/precious/quizapp/QuizApp.java
+   ```
+3. Run the app:
+   ```
+   java com.precious.quizapp.QuizApp
    ```
 
-### Running the Application
-To run the application, use the following command:
-```bash
-java com.precious.quizapp.QuizApplication
-```
+---
 
-## Usage
-1. Start the application.
-2. Follow the on-screen instructions to select a quiz topic.
-3. Answer the questions and submit your responses.
-4. Review your score and feedback at the end of the quiz.
+## Future Improvements
 
-## Contributing
-Contributions are welcome! Feel free to submit a pull request or open an issue for any suggestions or improvements.
+- Add support for storing user scores in a database.
+- Improve question repository to fetch questions from external files or APIs.
+- Implement a graphical user interface (GUI) for better user experience.
 
 ## License
+
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Acknowledgments
-- Thanks to all contributors and users for making QuizApp a success!
-
