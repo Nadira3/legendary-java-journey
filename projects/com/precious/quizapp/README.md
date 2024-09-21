@@ -1,4 +1,3 @@
-```markdown
 # QuizApp
 
 ## Overview
@@ -55,4 +54,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Acknowledgments
 - Thanks to all contributors and users for making QuizApp a success!
-```
+
