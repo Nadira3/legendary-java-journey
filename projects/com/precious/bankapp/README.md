@@ -1,4 +1,3 @@
-```markdown
 # Simple Banking Application
 
 ## Project Description
@@ -81,4 +80,3 @@ Your current balance is: $500.00
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-```
