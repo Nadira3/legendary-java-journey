@@ -11,6 +11,10 @@ class BankAccount {
     public BankAccount() {
         this.balance = 0.00; // Initialize balance
     }
+    
+    public BankAccount(double balance) {
+        this.balance = balance; // Initialize balance
+    }
 
     // Deposits a valid amount into the account
     public void deposit(double amount) {
