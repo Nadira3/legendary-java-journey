@@ -19,17 +19,26 @@ class BankAction {
 	        System.out.println("1. Savings Account");
         	System.out.println("2. Checking Account");
 	        System.out.println("3. Fixed Deposit Account");
+	        System.out.print("Enter your choice: ");
 
 		BankAccount account;
 		// Validate if user input is of integer type
             	if (!scanner.hasNextInt()) {
                 	System.out.println("Invalid input. Please enter a number between 1 and 3.\n");
+	        	System.out.print("Enter your choice: ");
                 	scanner.next(); // Clear invalid input
             	}
-	        System.out.print("Enter your choice: ");
-		int response = scanner.nextInt();
+		int choice = scanner.nextInt();
+			
+		// Validate if user input is a valid option
+		while (choice < 1 || choice > 2)
+		{
+                	System.out.println("Invalid input. Please enter a number either 1 or 2.\n");
+	        	System.out.print("Enter your choice: ");
+			choice = scanner.nextInt();
+		}
 
-		switch (response) {
+		switch (choice) {
 			case 1:
 				account = new SavingsAccount(accountName);
 			case 2:
@@ -79,10 +88,20 @@ class BankAction {
 			System.out.print("Enter your choice: ");
 			
 			// Validate if user input is of integer type
-            		while (!scanner.hasNextInt() ||(choice = scanner.nextInt()) < 1 || choice > 2) {
+            		while (!scanner.hasNextInt()) {
                 		System.out.println("Invalid input. Please enter a number either 1 or 2.\n");
-	                	scanner.next(); // Clear invalid input
+	        		System.out.print("Enter your choice: ");
+				scanner.next();
 	            	}
+			choice = scanner.nextInt();
+			
+			// Validate if user input is a valid option
+			while (choice < 1 || choice > 2)
+			{
+                		System.out.println("Invalid input. Please enter a number either 1 or 2.\n");
+	        		System.out.print("Enter your choice: ");
+				choice = scanner.nextInt();
+			}
 
 			switch (choice) {
 				case 1:
