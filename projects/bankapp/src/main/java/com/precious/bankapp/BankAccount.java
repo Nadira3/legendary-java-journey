@@ -70,12 +70,12 @@ class BankAccount {
 	}
     
 	// Getter for accountName (if needed for future use)
-	public String getName() {
+	public String getAccountName() {
 		return this.accountName;
 	}
     
 	// Setter for accountName (if needed for update)
-	public void setName(String accountName) {
+	public void setAccountName(String accountName) {
 		this.accountName = accountName;
 	}
     
