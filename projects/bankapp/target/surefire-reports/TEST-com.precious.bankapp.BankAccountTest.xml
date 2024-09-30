@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.precious.bankapp.BankAccountTest" time="0.253" tests="6" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.precious.bankapp.BankAccountTest" time="0.101" tests="7" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="17"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -11,7 +11,7 @@
     <property name="java.vm.specification.version" value="17"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="sun.boot.library.path" value="/data/data/com.termux/files/usr/lib/jvm/java-17-openjdk/lib"/>
-    <property name="sun.java.command" value="/data/data/com.termux/files/home/legendary-java-journey/projects/bankapp/target/surefire/surefirebooter-20240928060026217_3.jar /data/data/com.termux/files/home/legendary-java-journey/projects/bankapp/target/surefire 2024-09-28T06-00-20_233-jvmRun1 surefire-20240928060026217_1tmp surefire_0-20240928060026217_2tmp"/>
+    <property name="sun.java.command" value="/data/data/com.termux/files/home/legendary-java-journey/projects/bankapp/target/surefire/surefirebooter-20240929172814671_3.jar /data/data/com.termux/files/home/legendary-java-journey/projects/bankapp/target/surefire 2024-09-29T17-28-14_285-jvmRun1 surefire-20240929172814671_1tmp surefire_0-20240929172814671_2tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="/data/data/com.termux/files/home/legendary-java-journey/projects/bankapp/target/test-classes:/data/data/com.termux/files/home/legendary-java-journey/projects/bankapp/target/classes:/data/data/com.termux/files/home/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.9.0/junit-jupiter-api-5.9.0.jar:/data/data/com.termux/files/home/.m2/repository/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.jar:/data/data/com.termux/files/home/.m2/repository/org/junit/platform/junit-platform-commons/1.9.0/junit-platform-commons-1.9.0.jar:/data/data/com.termux/files/home/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/data/data/com.termux/files/home/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.9.0/junit-jupiter-engine-5.9.0.jar:/data/data/com.termux/files/home/.m2/repository/org/junit/platform/junit-platform-engine/1.9.0/junit-platform-engine-1.9.0.jar:"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -26,7 +26,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="/data/data/com.termux/files/home/legendary-java-journey/projects/bankapp/target/surefire/surefirebooter-20240928060026217_3.jar"/>
+    <property name="surefire.real.class.path" value="/data/data/com.termux/files/home/legendary-java-journey/projects/bankapp/target/surefire/surefirebooter-20240929172814671_3.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="17-internal+0-adhoc..src"/>
     <property name="user.name" value="u0_a171"/>
@@ -50,28 +50,29 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="61.0"/>
   </properties>
-  <testcase name="testNegativeWithdraw" classname="com.precious.bankapp.BankAccountTest" time="0.102">
+  <testcase name="testAccountNumberGeneration" classname="com.precious.bankapp.BankAccountTest" time="0.019"/>
+  <testcase name="testNegativeWithdraw" classname="com.precious.bankapp.BankAccountTest" time="0.006">
     <system-out><![CDATA[Invalid withdrawal amount. Please enter a positive number.
 
 ]]></system-out>
   </testcase>
-  <testcase name="testWithdraw" classname="com.precious.bankapp.BankAccountTest" time="0.022">
-    <system-out><![CDATA[Withdrawal successful! Your new balance is: $70.0
+  <testcase name="testWithdraw" classname="com.precious.bankapp.BankAccountTest" time="0.015">
+    <system-out><![CDATA[Withdrawal successful! Your new accountBalance is: $70.0
 
 ]]></system-out>
   </testcase>
-  <testcase name="testInitialBalance" classname="com.precious.bankapp.BankAccountTest" time="0.003"/>
+  <testcase name="testInitialBalance" classname="com.precious.bankapp.BankAccountTest" time="0.005"/>
   <testcase name="testDeposit" classname="com.precious.bankapp.BankAccountTest" time="0.006">
-    <system-out><![CDATA[Deposit successful! Your new balance is: $150.0
+    <system-out><![CDATA[Deposit successful! Your new accountBalance is: $150.0
 
 ]]></system-out>
   </testcase>
-  <testcase name="testOverdraw" classname="com.precious.bankapp.BankAccountTest" time="0.005">
-    <system-out><![CDATA[Insufficient balance. Cannot withdraw $200.0.
+  <testcase name="testOverdraw" classname="com.precious.bankapp.BankAccountTest" time="0.006">
+    <system-out><![CDATA[Insufficient accountBalance. Cannot withdraw $200.0.
 
 ]]></system-out>
   </testcase>
-  <testcase name="testNegativeDeposit" classname="com.precious.bankapp.BankAccountTest" time="0.004">
+  <testcase name="testNegativeDeposit" classname="com.precious.bankapp.BankAccountTest" time="0.006">
     <system-out><![CDATA[Invalid deposit amount. Please enter a positive number.
 
 ]]></system-out>
