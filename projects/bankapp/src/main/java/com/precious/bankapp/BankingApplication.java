@@ -1,114 +1,78 @@
 package com.precious.bankapp;
+import com.precious.utils.InputUtils;
+import com.precious.utils.UniqueIDGenerator;
 import java.util.Scanner;
 import java.util.ArrayList;
 
 /**
  * Main class to run the Banking Application.
  */
+
 public class BankingApplication {
 
+    private static BankAction bankAction = new BankAction();
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+            System.out.println("Welcome to the Bank!");
+            System.out.println("1. Log in");
+            System.out.println("2. Create new customer");
+            System.out.println("3. Exit");
+            int choice = InputUtils.getIntInput(scanner, "Enter choice: ");
+
+            switch (choice) {
+                case 1:
+                    // Login flow
+                    System.out.print("Enter Customer ID: ");
+                    String customerId = scanner.nextLine();
+                    Customer customer = bankAction.getCustomerByID(customerId);
+
+                    if (customer != null) {
+                        System.out.println("Welcome, " + customer.getName());
+                        CustomerSession session = new CustomerSession(customer, bankAction, scanner);
+                        session.start();
+                    } else {
+                        System.out.println("Customer not found. Please create an account.");
+                    }
+                    break;
+
+                case 2:
+                    // Create new customer
+                    createCustomer(scanner);
+                    break;
+
+                case 3:
+                    System.out.println("Thank you for using the Bank!");
+                    return;
+
+                default:
+                    System.out.println("Invalid choice. Try again.");
+                    break;
+            }
+        }
+    }
+
+    private static void createCustomer(Scanner scanner) {
     
-	public static void main(String[] args) {
-        
-		Scanner scanner = new Scanner(System.in);  // Single Scanner instance
-		BankAction action = new BankAction();
-		BankAccount account;
-		ArrayList<BankAccount> accountList = new ArrayList<>();
-        	boolean running = true;
+	    System.out.print("Enter your name: ");
+	    String name = scanner.nextLine();
+    
+	    System.out.print("Enter your address: ");
+	    String address = scanner.nextLine();
+    
+	    // Generate a unique customer ID using the UniqueIDGenerator class
+	    String customerId = UniqueIDGenerator.generateAlphanumericId("CUST", 6);
+	    // Create a new customer object
+	    Customer newCustomer = new Customer(name, customerId, address);
+    
+	    // Add the new customer to the system
+	    bankAction.addCustomer(newCustomer);
+    
+	    // Output success message
+	    System.out.println("Customer created successfully.");
+	    System.out.println("Your Customer ID is: " + newCustomer.getId());
 
-		System.out.println("Welcome to the Simple Banking Application!");
-	        System.out.print("Please enter your name: ");
-		String accountName = scanner.nextLine(); // Get the account holder's name   
-
-        
-		// Main loop to keep the application running until the user exits
-		while (running) {
-			action.printOptions(); // Show the options menu
-			System.out.print("Enter your choice: ");
-
-            		// Validate if user input is of integer type
-            		if (!scanner.hasNextInt()) {
-				System.out.println("Invalid input. Please enter a number between 1 and 6.\n");
-				scanner.next(); // Clear invalid input
-				continue;
-			}
-
-			int choice = scanner.nextInt();
-
-			// Validate option choice (1-4)
-			if (!action.isValidOption(choice)) {
-				System.out.println("Please enter a valid number from 1 to 6.\n");
-				continue;
-			}
-
-			// Handle each action based on user choice
-			switch (choice)
-			{
-				case 1:
-					account = action.createAccount(scanner, accountName); // Create bank account with user's name
-					accountList.add(account);
-					System.out.println(account);
-					break;
-		    
-				case 2: // Deposit
-					account = action.queryAccountStatus(accountList, scanner);
-					if (account == null)
-					{
-						account = action.createAccount(scanner, accountName); // Create bank account with user's name
-						accountList.add(account);
-					}
-					System.out.print("Enter the amount to deposit: $");
-					if (scanner.hasNextDouble()) {
-						double depositAmount = scanner.nextDouble();
-						account.deposit(depositAmount);
-					} else {
-						System.out.println("Invalid input. Please enter a valid amount.\n");
-						scanner.next(); // Clear invalid input
-					}
-					break;
-		    
-				case 3: // Withdraw
-					account = action.queryAccountStatus(accountList, scanner);
-					if (account == null)
-					{
-						account = action.createAccount(scanner, accountName); // Create bank account with user's name
-						accountList.add(account);
-					}
-					System.out.print("Enter the amount to withdraw: $");
-					if (scanner.hasNextDouble()) {
-						double withdrawAmount = scanner.nextDouble();
-						account.withdraw(withdrawAmount);
-					} else {
-						System.out.println("Invalid input. Please enter a valid amount.\n");
-						scanner.next(); // Clear invalid input
-					}
-					break;
-		
-				case 4: // View Account Details
-					action.displayAccountDetails(accountList);
-					break;
-		    
-				case 5: // View Account Balance
-					account = action.queryAccountStatus(accountList, scanner);
-					if (account == null)
-					{
-						account = action.createAccount(scanner, accountName); // Create bank account with user's name
-						accountList.add(account);
-					}
-					double accountBalance = account.getBalance();
-					System.out.println("Your current accountBalance is: $" + accountBalance + ".\n");
-					break;
-		    
-				case 6: // Exit     
-					System.out.println("Thank you for using the Simple Banking Application. Goodbye!");
-					running = false;
-					break;
-
-				default:
-					System.out.println("Unknown error. Please try again.");
-			}
-		}
-
-		scanner.close(); // Close the scanner when done
 	}
 }
