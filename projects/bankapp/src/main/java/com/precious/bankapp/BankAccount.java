@@ -5,92 +5,29 @@ import java.util.Scanner;
 /**
  * Class to manage the bank account operations.
  */
-class BankAccount {
-    
-	private double accountBalance;
-	private String accountName;
-	private String accountNumber;
+public abstract class BankAccount {
+    protected double balance;
+    protected String accountNumber;
 
-    	public BankAccount() {
-        	this.accountBalance = 0.00; // Initialize accountBalance
-	        this.accountName = "Unknown"; // Initialize accountName if not set
-		this.accountNumber = generateAccountNumber();
-	}
-    
-	public BankAccount(String accountName) {
-		this(0.00, accountName); // Initialize accountName with default account accountBalance using chain construction.
-	}
+    public BankAccount(String accountNumber, double initialBalance) {
+        this.accountNumber = accountNumber;
+        this.balance = initialBalance;
+    }
 
-	public BankAccount(double accountBalance, String accountName) {
-		this.accountBalance = accountBalance; // Initialize accountBalance
-        	this.accountName = accountName; // Initialize accountName
-	        this.accountNumber = generateAccountNumber();
-	}
+    public String getAccountNumber() {
+        return accountNumber;
+    }
 
-    
-	private String generateAccountNumber() {
-		long randomNum = (long) (Math.random() * 10000000000L); // Generate random 10-digit number
+    public double getBalance() {
+        return balance;
+    }
 
-		return String.format("%010d", randomNum); // Ensure it's always 10 digits, padded with zeros if necessary 
-	}
+    public abstract void deposit(double amount);
 
-    
-	// Deposits a valid amount into the account
-	public void deposit(double amount) {
-		if (amount > 0) {
-			this.accountBalance += amount;
-            		System.out.println("Deposit successful! Your new accountBalance is: $" + this.accountBalance + "\n");
-		} else {
-			System.out.println("Invalid deposit amount. Please enter a positive number.\n");
-		}
-	}
+    public abstract boolean withdraw(double amount);
 
-	// Withdraws a valid amount from the account if sufficient funds exist
-	public void withdraw(double amount) {
-		if (amount > 0) {
-			if (this.getBalance() >= amount) {
-				this.accountBalance -= amount;
-				System.out.println("Withdrawal successful! Your new accountBalance is: $" + this.accountBalance + "\n");
-            		} else {
-				System.out.println("Insufficient accountBalance. Cannot withdraw $" + amount + ".\n");
-			}
-        	} else {
-			System.out.println("Invalid withdrawal amount. Please enter a positive number.\n");
-        	}
-	}
-
-	// Getter for accountBalance (if needed for future use)
-	public double getBalance() {
-		return this.accountBalance;
-	}
-	
-	// Setter for accountBalance (if needed for future use)
-	public void setBalance(double amount) {
-		this.accountBalance = amount;
-	}
-    
-	// Getter for accountName (if needed for future use)
-	public String getAccountName() {
-		return this.accountName;
-	}
-    
-	// Setter for accountName (if needed for update)
-	public void setAccountName(String accountName) {
-		this.accountName = accountName;
-	}
-    
-	// Getter for accountNumber (if needed for future use)
-	public String getAccountNumber() {
-        	return this.accountNumber;
-	}
-
-	@Override
-	public String toString() {
-		return "BankAccount{" +
-			"accountName='" + accountName + '\'' +
-			", accountNumber='" + accountNumber + '\'' +
-			", accountBalance=" + String.format("%.2f", accountBalance) +
-			'}';
-
-	}
+    @Override
+    public String toString() {
+        return "Account Number: " + accountNumber + ", Balance: " + balance;
+    }
 }

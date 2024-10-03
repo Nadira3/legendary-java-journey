@@ -1,32 +1,22 @@
 package com.precious.bankapp;
 
-class CheckingAccount extends BankAccount {
-	private double overdraftLimit;
+public class CheckingAccount extends BankAccount {
 
-	public CheckingAccount() {
-		overdraftLimit = 100.00;
-	}
+    public CheckingAccount(String accountNumber, double initialBalance) {
+        super(accountNumber, initialBalance);
+    }
 
-	public CheckingAccount(String accountName) {
-		this(100.00, accountName);
-	}
-	
-	public CheckingAccount(double overdraftLimit, String accountName) {
-		super(accountName);
-		this.overdraftLimit = overdraftLimit;
-	}
-	// Getter for overdraftLimit
-	public double getOverdraftLimit() {
-		return overdraftLimit;
-	}
+    @Override
+    public void deposit(double amount) {
+        balance += amount;
+    }
 
-	@Override
-	public void withdraw(double amount) {
-
-    		if (this.getBalance() + overdraftLimit >= amount) {
-     	   		super.withdraw(amount);
-    		}
-		else
-			System.out.println("Insufficient Balance, Exceeded overdraft limit");
-    	}
+    @Override
+    public boolean withdraw(double amount) {
+        if (balance >= amount) {
+            balance -= amount;
+            return true;
+        }
+        return false;
+    }
 }

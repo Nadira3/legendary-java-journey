@@ -1,31 +1,22 @@
 package com.precious.bankapp;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+public class FixedDepositAccount extends BankAccount {
+    private int lockPeriod;
 
-class FixedDepositAccount extends BankAccount {
-	private double depositAmount;
-	private String maturityDate;
+    public FixedDepositAccount(String accountNumber, double initialBalance, int lockPeriod) {
+        super(accountNumber, initialBalance);
+        this.lockPeriod = lockPeriod;
+    }
 
-	public FixedDepositAccount(String accountName) {
-		super(accountName);
-	}
-	
-	public FixedDepositAccount(double depositAmount, String maturityDate) {
-		this.depositAmount = depositAmount;
-		this.maturityDate = maturityDate;
-	}
+    @Override
+    public void deposit(double amount) {
+        // Fixed deposit account may not allow additional deposits
+        throw new UnsupportedOperationException("Cannot deposit into a fixed deposit account");
+    }
 
-    	// Implement logic to check if the maturity date has been reached
-	public boolean isMatured() {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		LocalDate maturity = LocalDate.parse(this.maturityDate, formatter);
-		return LocalDate.now().isAfter(maturity);	
-	}
-
-	public double calculateTotalAmount(double interestRate) {
-    		double interest = (depositAmount * interestRate) / 100; // You could also add an interest rate for Fixed Deposit.
-    		return depositAmount + interest;
-	}
-
+    @Override
+    public boolean withdraw(double amount) {
+        // Fixed deposit account may restrict withdrawals
+        throw new UnsupportedOperationException("Cannot withdraw before lock period expires");
+    }
 }

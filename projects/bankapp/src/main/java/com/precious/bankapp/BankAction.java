@@ -2,115 +2,152 @@ package com.precious.bankapp;
 
 import java.util.Scanner;
 import java.util.ArrayList;
+import com.precious.utils.FileUtils;
+import com.precious.utils.UniqueIDGenerator;
+import com.precious.utils.InputUtils;
+import java.util.List;
+
 /**
  * Class to handle user actions and validate choices.
  */
-class BankAction {
 
-	// Validates if the response is between 1 and 4
-	public boolean isValidOption(int option) {
-        	return option >= 1 && option <= 6;
-	}
-	
-    	// Creates a new bankaccount
-	public BankAccount createAccount(Scanner scanner, String accountName) {
-        	System.out.println("Which type of account will you like to open?");
-        	System.out.println("Please select an option:");
-	        System.out.println("1. Savings Account");
-        	System.out.println("2. Checking Account");
-	        System.out.println("3. Fixed Deposit Account");
-	        System.out.print("Enter your choice: ");
+public class BankAction {
 
-		BankAccount account;
-		// Validate if user input is of integer type
-            	if (!scanner.hasNextInt()) {
-                	System.out.println("Invalid input. Please enter a number between 1 and 3.\n");
-	        	System.out.print("Enter your choice: ");
-                	scanner.next(); // Clear invalid input
-            	}
-		int choice = scanner.nextInt();
-			
-		// Validate if user input is a valid option
-		while (choice < 1 || choice > 2)
-		{
-                	System.out.println("Invalid input. Please enter a number either 1 or 2.\n");
-	        	System.out.print("Enter your choice: ");
-			choice = scanner.nextInt();
-		}
+    private static final String fileName = "customers.dat";
 
-		switch (choice) {
-			case 1:
-				account = new SavingsAccount(accountName);
-			case 2:
-				account = new CheckingAccount(accountName);
-			case 3:
-				account = new FixedDepositAccount(accountName);
-			default:
-				account = new BankAccount(accountName);
-		}
-	    
-		// it’s possible to return a SavingsAccount, CheckingAccount, or FixedDepositAccount while still having the method return a BankAccount.
-		// This works because all three of those classes inherit from BankAccount. In object-oriented programming, this is called polymorphism
-		return account;
-    	}
+    // Method to retrieve a customer by their ID
+    public Customer getCustomerByID(String customerID) {
+        // Read the current list of customers from the file
+        List<Customer> customers = FileUtils.readObjectsFromFile(fileName);
+
+        // Search for the customer with the given ID using the utility method
+        for (Customer customer : customers) {
+            if (customer.getId().equals(customerID)) {
+                System.out.println("Customer found: " + customer.getName());
+                return customer;  // Return the found customer
+            }
+        }
+
+        // If no customer is found, return null or handle the case as needed
+        System.out.println("No customer found with ID: " + customerID);
+        return null;
+    }
+
+    // Example method for adding a customer (from the previous example)
+    public void addCustomer(Customer customer) {
+        // Read the current list of customers from the file
+        List<Customer> customers = FileUtils.readObjectsFromFile(fileName);
+
+        // Check if the customer ID is unique using the utility method
+	if (!FileUtils.isIdentifierUnique(customers, (existingCustomer, id) -> existingCustomer.getId().equals(id), customer.getId())) {
+            System.out.println("Customer ID already exists. Please choose a different ID.");
+            return;
+        }
+
+        // Add the new customer and write the updated list back to the file
+        customers.add(customer);
+        FileUtils.writeObjectsToFile(fileName, customers);
+
+        System.out.println("Customer added successfully.");
+    }
     
-	// Displays the menu options
-	public void printOptions() {
-        	System.out.println("Please select an option:");
-	        System.out.println("1. Create Account");
-	        System.out.println("2. Deposit Money");
-        	System.out.println("3. Withdraw Money");
-	        System.out.println("4. View Account Details");
-        	System.out.println("5. View Account Balance");
-	        System.out.println("6. Exit");
-    	}
+    public static void transferFunds(BankAccount fromAccount, BankAccount toAccount, double amount) {
+        if (fromAccount.withdraw(amount)) {
+            toAccount.deposit(amount);
+            System.out.println("Transfer successful.");
+        } else {
+            System.out.println("Transfer failed. Insufficient funds.");
+        }
+    }
 
-	// Displays account details
-	public void displayAccountDetails(ArrayList<BankAccount> accountList) {
-		for (BankAccount account : accountList)
-		{
-			System.out.println(account);
-		}
-	}
-	
-	// Checks if a user has a valid account
-	public BankAccount queryAccountStatus(ArrayList<BankAccount> accountList, Scanner scanner) {
-		BankAccount accountInUse = null;
-		int choice;
+    public static void closeAccount(BankAccount account, Customer customer) {
+        customer.getAccounts().remove(account);
+        System.out.println("Account closed successfully.");
+    }
+    
+    public static void createAccount(Scanner scanner, Customer customer) {
+        System.out.println("Account Types: 1. Checking 2. Savings 3. Fixed Deposit");
+        int type = InputUtils.getIntInput(scanner, "Enter choice: ");
 
-		for (BankAccount account : accountList)
-		{
-			System.out.println(account);
-			System.out.println("Will you like to perform an action with this account?");
-			System.out.println("1. Yes");
-			System.out.println("2. No");
-			
-			System.out.print("Enter your choice: ");
-			
-			// Validate if user input is of integer type
-            		while (!scanner.hasNextInt()) {
-                		System.out.println("Invalid input. Please enter a number either 1 or 2.\n");
-	        		System.out.print("Enter your choice: ");
-				scanner.next();
-	            	}
-			choice = scanner.nextInt();
-			
-			// Validate if user input is a valid option
-			while (choice < 1 || choice > 2)
-			{
-                		System.out.println("Invalid input. Please enter a number either 1 or 2.\n");
-	        		System.out.print("Enter your choice: ");
-				choice = scanner.nextInt();
-			}
+	String accountNumber = UniqueIDGenerator.generateAlphanumericId("ACCT-", 8);
+        double initialBalance = 0.00;
+        String prompt;
 
-			switch (choice) {
-				case 1:
-					accountInUse = account;
-					break;
-				case 2:
-					continue;
-			}
-		}
-		return accountInUse;
-	}
+        switch (type) {
+            case 1:
+                customer.addAccount(new CheckingAccount(accountNumber, initialBalance));
+                break;
+            case 2:
+                prompt = "Enter interest rate for savings account in percentage => 10% = 0.1: ";
+        	double interestRate = InputUtils.getDoubleInput(scanner, prompt);
+                customer.addAccount(new SavingsAccount(accountNumber, initialBalance, interestRate));
+                break;
+            case 3:
+        	prompt = "Enter lock period for fixed deposit account (in months): ";
+        	int lockPeriod = InputUtils.getIntInput(scanner, prompt);
+                customer.addAccount(new FixedDepositAccount(accountNumber, initialBalance, lockPeriod));
+                break;
+            default:
+                System.out.println("Invalid account type.");
+        }
+
+        System.out.println("Account created successfully.");
+    }
+
+    public static void performDeposit(Scanner scanner, Customer customer) {
+        System.out.print("Enter account number: ");
+        String accountNumber = scanner.nextLine();
+        BankAccount account = customer.getAccount(accountNumber);
+
+        if (account != null) {
+            String prompt = "Enter amount to deposit: ";
+            double amount = InputUtils.getDoubleInput(scanner, prompt);
+            account.deposit(amount);
+            System.out.println("Deposit successful.");
+        } else {
+            System.out.println("Account not found.");
+        }
+    }
+
+    public static void performWithdrawal(Scanner scanner, Customer customer) {
+        System.out.print("Enter account number: ");
+        String accountNumber = scanner.nextLine();
+        BankAccount account = customer.getAccount(accountNumber);
+
+        if (account != null) {
+            String prompt = "Enter amount to withdraw: ";
+            double amount = InputUtils.getDoubleInput(scanner, prompt);
+            if (account.withdraw(amount)) {
+                System.out.println("Withdrawal successful.");
+            } else {
+                System.out.println("Insufficient funds.");
+            }
+        } else {
+            System.out.println("Account not found.");
+        }
+    }
+
+    public static void performTransfer(Scanner scanner, Customer customer) {
+        System.out.print("Enter source account number: ");
+        String fromAccountNumber = scanner.nextLine();
+        BankAccount fromAccount = customer.getAccount(fromAccountNumber);
+
+        System.out.print("Enter destination account number: ");
+        String toAccountNumber = scanner.nextLine();
+        BankAccount toAccount = customer.getAccount(toAccountNumber);
+
+        if (fromAccount != null && toAccount != null) {
+            String prompt = "Enter amount to transfer: ";
+            double amount = InputUtils.getDoubleInput(scanner, prompt);
+            BankAction.transferFunds(fromAccount, toAccount, amount);
+        } else {
+            System.out.println("Invalid account number(s).");
+        }
+    }
+
+    public static void viewAccounts(Customer customer) {
+        for (BankAccount account : customer.getAccounts()) {
+            System.out.println(account);
+        }
+    }
 }
