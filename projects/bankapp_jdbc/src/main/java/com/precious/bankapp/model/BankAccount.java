@@ -1,4 +1,4 @@
-package com.precious.bankapp;
+package com.precious.bankapp.model;
 
 import java.util.Scanner;
 

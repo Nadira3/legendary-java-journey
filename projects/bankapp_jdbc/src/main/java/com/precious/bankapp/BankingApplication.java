@@ -1,6 +1,8 @@
 package com.precious.bankapp;
-import com.precious.utils.InputUtils;
-import com.precious.utils.UniqueIDGenerator;
+import com.precious.bankapp.dao.*;
+import com.precious.bankapp.model.*;
+import com.precious.bankapp.service.*;
+import com.precious.utils.*;
 import java.util.Scanner;
 import java.util.ArrayList;
 
