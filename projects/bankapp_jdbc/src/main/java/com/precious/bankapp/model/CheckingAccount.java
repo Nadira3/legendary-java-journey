@@ -1,4 +1,4 @@
-package com.precious.bankapp;
+package com.precious.bankapp.model;
 
 public class CheckingAccount extends BankAccount {
 

@@ -1,11 +1,11 @@
-package com.precious.bankapp;
+package com.precious.bankapp.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ArrayList;
-import java.util.List;
 
-public class Customer {
+public class Customer implements Serializable {
+    private static final long serialVersionUID = 1L;
     private String name;
     private String id;
     private String address;
@@ -15,9 +15,10 @@ public class Customer {
         this.name = name;
         this.id = id;
         this.address = address;
-        this.accounts = new ArrayList<>();
+	this.accounts = new ArrayList<>();
     }
 
+    // Getters
     public String getName() {
         return name;
     }
@@ -29,15 +30,15 @@ public class Customer {
     public String getAddress() {
         return address;
     }
-
+    
     public void addAccount(BankAccount account) {
         this.accounts.add(account);
     }
-
+    
     public List<BankAccount> getAccounts() {
         return accounts;
     }
-
+    
     public BankAccount getAccount(String accountNumber) {
         for (BankAccount account : accounts) {
             if (account.getAccountNumber().equals(accountNumber)) {

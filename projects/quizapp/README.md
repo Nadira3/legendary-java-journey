@@ -82,6 +82,7 @@ QuizApp/
 
 - Java Development Kit (JDK) 8 or above.
 - A terminal or IDE to run the application.
+- A GUI-enabled platform
 
 ### How to Run the Application
 
