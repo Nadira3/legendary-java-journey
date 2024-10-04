@@ -47,4 +47,8 @@ public class Customer implements Serializable {
         }
         return null; // Account not found
     }
+    
+    public int getNumberOfAccounts() {
+        return accounts.size();
+    }
 }
