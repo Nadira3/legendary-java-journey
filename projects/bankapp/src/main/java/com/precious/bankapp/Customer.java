@@ -36,7 +36,7 @@ public class Customer implements Serializable {
     }
     
     public List<BankAccount> getAccounts() {
-        return accounts;
+        return this.accounts;
     }
     
     public BankAccount getAccount(String accountNumber) {
