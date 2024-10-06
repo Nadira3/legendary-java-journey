@@ -11,10 +11,12 @@ public class CustomerSession {
     private Customer customer;
     private BankAction bankAction;
     private Scanner scanner; // Scanner passed from BankingApplication
+    private CustomerService customerService;
 
-    public CustomerSession(Customer customer, BankAction bankAction, Scanner scanner) {
+    public CustomerSession(Customer customer, BankAction bankAction, Scanner scanner, CustomerService customerService) {
         this.customer = customer;
         this.bankAction = bankAction;
+	this.customerService = customerService;
         this.scanner = scanner; // Using the shared scanner
     }
 
@@ -42,12 +44,13 @@ public class CustomerSession {
                     bankAction.performWithdrawal(scanner, customer);
                     break;
                 case 4:
-                    bankAction.performTransfer(scanner, customer);
+                    bankAction.performTransfer(scanner, customer, customerService);
                     break;
                 case 5:
                     bankAction.viewAccounts(customer);
                     break;
                 case 6:
+		    customerService.updateCustomer(customer);
                     System.out.println("Logging out...");
                     return; // End session and go back to main menu
                 default:
