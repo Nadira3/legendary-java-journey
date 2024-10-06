@@ -11,6 +11,7 @@ import java.util.ArrayList;
 public class BankingApplication {
 
     private static BankAction bankAction = new BankAction();
+    private static CustomerService customerService = new CustomerService();
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -27,11 +28,11 @@ public class BankingApplication {
                     // Login flow
                     System.out.print("Enter Customer ID: ");
                     String customerId = scanner.nextLine();
-                    Customer customer = bankAction.getCustomerByID(customerId);
+                    Customer customer = customerService.getCustomerByID(customerId);
 
                     if (customer != null) {
                         System.out.println("Welcome, " + customer.getName());
-                        CustomerSession session = new CustomerSession(customer, bankAction, scanner);
+                        CustomerSession session = new CustomerSession(customer, bankAction, scanner, customerService);
                         session.start();
                     } else {
                         System.out.println("Customer not found. Please create an account.");
@@ -68,7 +69,7 @@ public class BankingApplication {
 	    Customer newCustomer = new Customer(name, customerId, address);
     
 	    // Add the new customer to the system
-	    bankAction.addCustomer(newCustomer);
+	    customerService.addCustomer(newCustomer);
     
 	    // Output success message
 	    System.out.println("Customer created successfully.");
