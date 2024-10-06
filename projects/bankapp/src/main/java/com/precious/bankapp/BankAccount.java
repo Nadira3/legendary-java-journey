@@ -1,11 +1,12 @@
 package com.precious.bankapp;
 
 import java.util.Scanner;
+import java.io.Serializable;
 
 /**
  * Class to manage the bank account operations.
  */
-public abstract class BankAccount {
+public abstract class BankAccount implements Serializable {
     protected double balance;
     protected String accountNumber;
 
