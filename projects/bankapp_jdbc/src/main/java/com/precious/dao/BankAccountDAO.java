@@ -1,6 +1,7 @@
-package com.precious.bankapp.dao;
-import com.precious.bankapp.model.*;
-import com.precious.bankapp.model.*;
+package com.precious.dao;
+
+import com.precious.model.*;
+import com.precious.dao.*;
 import com.precious.utils.*;
 
 import java.sql.*;
@@ -24,6 +25,19 @@ public class BankAccountDAO {
 
             pstmt.executeUpdate();
             System.out.println("Bank account added successfully.");
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    public void updateBankAccount(Customer customer) {
+        String sql = "UPDATE BankAccount set balance =  ? where customerId = ?";
+
+        try (Connection conn = this.dbUtils.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            System.out.println("Bank account updated successfully.");
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());

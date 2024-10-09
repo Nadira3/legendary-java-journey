@@ -1,8 +1,8 @@
-package com.precious.bankapp.service;
+package com.precious.service;
 
-import com.precious.utils.InputUtils;
-import com.precious.bankapp.model.*;
-import com.precious.bankapp.dao.*;
+import com.precious.dao.*;
+import com.precious.model.*;
+import com.precious.utils.*;
 
 import java.util.Scanner;
 
@@ -12,12 +12,16 @@ import java.util.Scanner;
 public class CustomerSession {
 
     private Customer customer;
+    private CustomerService customerService;
     private BankAction bankAction;
+    private BankAccountDAO bankAccountDAO;
     private Scanner scanner; // Scanner passed from BankingApplication
 
-    public CustomerSession(Customer customer, BankAction bankAction, Scanner scanner) {
-        this.customer = customer;
+    public CustomerSession(BankAction bankAction, BankAccountDAO bankAccountDAO, Customer customer, CustomerService customerService, Scanner scanner) {
         this.bankAction = bankAction;
+        this.customer = customer;
+	this.customerService = customerService;
+	this.bankAccountDAO = bankAccountDAO;
         this.scanner = scanner; // Using the shared scanner
     }
 
@@ -45,13 +49,14 @@ public class CustomerSession {
                     bankAction.performWithdrawal(scanner, customer);
                     break;
                 case 4:
-                    bankAction.performTransfer(scanner, customer);
+                    bankAction.performTransfer(scanner, customer, customerService);
                     break;
                 case 5:
                     bankAction.viewAccounts(customer);
                     break;
                 case 6:
                     System.out.println("Logging out...");
+		    bankAccountDAO.updateBankAccount(customer);
                     return; // End session and go back to main menu
                 default:
                     System.out.println("Invalid choice. Try again.");

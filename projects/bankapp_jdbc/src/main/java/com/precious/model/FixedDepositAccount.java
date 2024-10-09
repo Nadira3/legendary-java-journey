@@ -1,4 +1,4 @@
-package com.precious.bankapp.model;
+package com.precious.model;
 
 public class FixedDepositAccount extends BankAccount {
     private int lockPeriod;

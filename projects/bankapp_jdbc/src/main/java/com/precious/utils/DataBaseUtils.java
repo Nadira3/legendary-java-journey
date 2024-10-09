@@ -11,16 +11,16 @@ import java.sql.*;
  * 6. process the results
  * 7. close
  */
+
 public class DataBaseUtils {
     private Connection con = null;
-    private String url;
-    private String name = "root"; // Default username
-    private String pwd; // Password should be set via constructor or method
     private String driverClassName = "com.mysql.cj.jdbc.Driver"; // Updated driver class name for MySQL Connector/J
+    private static String url = "jdbc:mysql://localhost:3306/bankapp";
+    private static String name; // username and password should be gotten from the environment
+    private static String pwd;
 
     // Constructor to initialize the database connection parameters
-    public DataBaseUtils(String url, String name, String pwd) {
-        this.url = url;
+    public DataBaseUtils(String name, String pwd) {
         this.name = name;
         this.pwd = pwd;
     }
@@ -28,10 +28,13 @@ public class DataBaseUtils {
     // Method to establish a connection to the database
     public void connect() throws SQLException {
         try {
-            // Load and register the JDBC driver
-            Class.forName(driverClassName);
-            // Create the connection
-            this.con = DriverManager.getConnection(this.url, this.name, this.pwd);
+		if (name == null || pwd == null) {
+            		throw new IllegalStateException("Database credentials are not set in environment variables");
+        	}
+            	// Load and register the JDBC driver
+            	Class.forName(driverClassName);
+            	// Create the connection
+            this.con = DriverManager.getConnection(url, this.name, this.pwd);
             System.out.println("Connection established successfully.");
         } catch (ClassNotFoundException e) {
             System.err.println("JDBC Driver not found: " + e.getMessage());
@@ -42,7 +45,9 @@ public class DataBaseUtils {
         }
     }
 
-    public Connection getConnection() {
+    public Connection getConnection() throws SQLException {
+	    if (this.con == null || this.con.isClosed())
+		    connect();
 	    return this.con;
     }
 

@@ -1,11 +1,11 @@
-package com.precious.bankapp.service;
+package com.precious.service;
 
-import java.util.Scanner;
-import java.util.ArrayList;
+import com.precious.dao.*;
+import com.precious.model.*;
 import com.precious.utils.*;
-import com.precious.bankapp.model.*;
-import com.precious.bankapp.dao.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * Class to handle user actions and validate choices.
@@ -15,48 +15,14 @@ public class BankAction {
 
     private static final String fileName = "customers.dat";
 
-    // Method to retrieve a customer by their ID
-    public Customer getCustomerByID(String customerID) {
-        // Read the current list of customers from the file
-        List<Customer> customers = FileUtils.readObjectsFromFile(fileName);
-
-        // Search for the customer with the given ID using the utility method
-        for (Customer customer : customers) {
-            if (customer.getId().equals(customerID)) {
-                System.out.println("Customer found: " + customer.getName());
-                return customer;  // Return the found customer
-            }
-        }
-
-        // If no customer is found, return null or handle the case as needed
-        System.out.println("No customer found with ID: " + customerID);
-        return null;
-    }
-
-    // Example method for adding a customer (from the previous example)
-    public void addCustomer(Customer customer) {
-        // Read the current list of customers from the file
-        List<Customer> customers = FileUtils.readObjectsFromFile(fileName);
-
-        // Check if the customer ID is unique using the utility method
-	if (!FileUtils.isIdentifierUnique(customers, (existingCustomer, id) -> existingCustomer.getId().equals(id), customer.getId())) {
-            System.out.println("Customer ID already exists. Please choose a different ID.");
-            return;
-        }
-
-        // Add the new customer and write the updated list back to the file
-        customers.add(customer);
-        FileUtils.writeObjectsToFile(fileName, customers);
-
-        System.out.println("Customer added successfully.");
-    }
-    
-    public static void transferFunds(BankAccount fromAccount, BankAccount toAccount, double amount) {
+    public static boolean transferFunds(BankAccount fromAccount, BankAccount toAccount, double amount) {
         if (fromAccount.withdraw(amount)) {
             toAccount.deposit(amount);
             System.out.println("Transfer successful.");
+	    return true;
         } else {
             System.out.println("Transfer failed. Insufficient funds.");
+	    return false;
         }
     }
 
@@ -69,13 +35,14 @@ public class BankAction {
         System.out.println("Account Types: 1. Checking 2. Savings 3. Fixed Deposit");
         int type = InputUtils.getIntInput(scanner, "Enter choice: ");
 
-	String accountNumber = UniqueIDGenerator.generateAlphanumericId("ACCT-", 8);
+	String accountNumber = UniqueIDGenerator.generateAlphanumericId("ACCT", 8);
         double initialBalance = 0.00;
         String prompt;
 
         switch (type) {
             case 1:
                 customer.addAccount(new CheckingAccount(accountNumber, initialBalance));
+		System.out.println(customer.getAccounts());
                 break;
             case 2:
                 prompt = "Enter interest rate for savings account in percentage => 10% = 0.1: ";
@@ -83,6 +50,8 @@ public class BankAction {
                 customer.addAccount(new SavingsAccount(accountNumber, initialBalance, interestRate));
                 break;
             case 3:
+        	prompt = "Enter initial deposit amount: ";
+        	initialBalance = InputUtils.getDoubleInput(scanner, prompt);
         	prompt = "Enter lock period for fixed deposit account (in months): ";
         	int lockPeriod = InputUtils.getIntInput(scanner, prompt);
                 customer.addAccount(new FixedDepositAccount(accountNumber, initialBalance, lockPeriod));
@@ -90,7 +59,7 @@ public class BankAction {
             default:
                 System.out.println("Invalid account type.");
         }
-
+	
         System.out.println("Account created successfully.");
     }
 
@@ -127,7 +96,8 @@ public class BankAction {
         }
     }
 
-    public static void performTransfer(Scanner scanner, Customer customer) {
+    public static void performTransfer(Scanner scanner, Customer customer, CustomerService customerService) {
+	boolean transactionStatus = false;
         System.out.print("Enter source account number: ");
         String fromAccountNumber = scanner.nextLine();
         BankAccount fromAccount = customer.getAccount(fromAccountNumber);
@@ -136,13 +106,20 @@ public class BankAction {
         String toAccountNumber = scanner.nextLine();
         BankAccount toAccount = customer.getAccount(toAccountNumber);
 
+	Customer recipient = customerService.getCustomerByAccountNumber(toAccountNumber);
+	if (toAccount == null)
+		toAccount = recipient.getAccount(toAccountNumber);
+
         if (fromAccount != null && toAccount != null) {
             String prompt = "Enter amount to transfer: ";
             double amount = InputUtils.getDoubleInput(scanner, prompt);
-            BankAction.transferFunds(fromAccount, toAccount, amount);
+            transactionStatus = BankAction.transferFunds(fromAccount, toAccount, amount);
         } else {
             System.out.println("Invalid account number(s).");
         }
+
+	if (transactionStatus)
+		customerService.updateCustomer(recipient);
     }
 
     public static void viewAccounts(Customer customer) {

@@ -1,4 +1,4 @@
-package com.precious.bankapp.model;
+package com.precious.model;
 
 public class SavingsAccount extends BankAccount {
     private double interestRate;

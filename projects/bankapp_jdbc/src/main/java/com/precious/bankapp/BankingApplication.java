@@ -1,7 +1,8 @@
 package com.precious.bankapp;
-import com.precious.bankapp.dao.*;
-import com.precious.bankapp.model.*;
-import com.precious.bankapp.service.*;
+
+import com.precious.dao.*;
+import com.precious.model.*;
+import com.precious.service.*;
 import com.precious.utils.*;
 import java.util.Scanner;
 import java.util.ArrayList;
@@ -13,10 +14,23 @@ import java.util.ArrayList;
 public class BankingApplication {
 
     private static BankAction bankAction = new BankAction();
+    private static BankAccountDAO bankAccountDAO;
+    private static CustomerService customerService;
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
+        if (args.length < 2) {
+            System.out.println("Usage: java -jar YourJavaApplication.jar <username> <password>");
+            return;
+        }
+        
+	String username = args[0];
+        String password = args[1];
+
+        DataBaseUtils dbUtils = new DataBaseUtils(username, password);
+	customerService = new CustomerService(dbUtils);
+        bankAccountDAO = new BankAccountDAO(dbUtils);
         while (true) {
             System.out.println("Welcome to the Bank!");
             System.out.println("1. Log in");
@@ -29,11 +43,11 @@ public class BankingApplication {
                     // Login flow
                     System.out.print("Enter Customer ID: ");
                     String customerId = scanner.nextLine();
-                    Customer customer = bankAction.getCustomerByID(customerId);
+                    Customer customer = customerService.getCustomerByID(customerId);
 
                     if (customer != null) {
                         System.out.println("Welcome, " + customer.getName());
-                        CustomerSession session = new CustomerSession(customer, bankAction, scanner);
+                        CustomerSession session = new CustomerSession(bankAction, bankAccountDAO, customer, customerService, scanner);
                         session.start();
                     } else {
                         System.out.println("Customer not found. Please create an account.");
@@ -70,7 +84,7 @@ public class BankingApplication {
 	    Customer newCustomer = new Customer(name, customerId, address);
     
 	    // Add the new customer to the system
-	    bankAction.addCustomer(newCustomer);
+	    customerService.addCustomer(newCustomer);
     
 	    // Output success message
 	    System.out.println("Customer created successfully.");
