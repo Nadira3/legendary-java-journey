@@ -15,7 +15,7 @@ public class Customer implements Serializable {
         this.name = name;
         this.id = id;
         this.address = address;
-	this.accounts = new ArrayList<>();
+	    this.accounts = new ArrayList<>();
     }
 
     // Getters
