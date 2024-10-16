@@ -2,8 +2,8 @@ package com.precious.model;
 
 public class CheckingAccount extends BankAccount {
 
-    public CheckingAccount(String accountNumber, double initialBalance) {
-        super(accountNumber, initialBalance);
+    public CheckingAccount(String accountNumber, double initialBalance, String customerId) {
+        super(accountNumber, initialBalance, customerId, 1);
     }
 
     @Override
