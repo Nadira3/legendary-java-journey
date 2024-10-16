@@ -29,7 +29,7 @@ public class BankingApplication {
         String password = args[1];
 
         DataBaseUtils dbUtils = new DataBaseUtils(username, password);
-	customerService = new CustomerService(dbUtils);
+	    customerService = new CustomerService(dbUtils);
         bankAccountDAO = new BankAccountDAO(dbUtils);
         while (true) {
             System.out.println("Welcome to the Bank!");
@@ -56,7 +56,7 @@ public class BankingApplication {
 
                 case 2:
                     // Create new customer
-                    createCustomer(scanner);
+                    customerService.createCustomer(scanner);
                     break;
 
                 case 3:
@@ -69,26 +69,4 @@ public class BankingApplication {
             }
         }
     }
-
-    private static void createCustomer(Scanner scanner) {
-    
-	    System.out.print("Enter your name: ");
-	    String name = scanner.nextLine();
-    
-	    System.out.print("Enter your address: ");
-	    String address = scanner.nextLine();
-    
-	    // Generate a unique customer ID using the UniqueIDGenerator class
-	    String customerId = UniqueIDGenerator.generateAlphanumericId("CUST", 6);
-	    // Create a new customer object
-	    Customer newCustomer = new Customer(name, customerId, address);
-    
-	    // Add the new customer to the system
-	    customerService.addCustomer(newCustomer);
-    
-	    // Output success message
-	    System.out.println("Customer created successfully.");
-	    System.out.println("Your Customer ID is: " + newCustomer.getId());
-
-	}
 }
