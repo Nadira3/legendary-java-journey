@@ -12,15 +12,20 @@ public class InputUtils {
      * @param prompt The message to display to the user
      * @return A valid integer input from the user
      */
-    public static int getIntInput(Scanner scanner, String prompt) {
+    public static int getIntInput(Scanner scanner, String prompt) 
+    {
         int input = -1;
-        while (true) {
-            try {
+        while (true) 
+	{
+            try 
+	    {
                 System.out.print(prompt);
                 input = scanner.nextInt();
                 scanner.nextLine(); // Consume the newline left by nextInt()
                 break; // Exit loop when input is valid
-            } catch (InputMismatchException e) {
+            }
+	    catch (InputMismatchException e) 
+	    {
                 System.out.println("Invalid input. Please enter a valid number.");
                 scanner.nextLine(); // Clear the invalid input
             }
@@ -28,15 +33,19 @@ public class InputUtils {
         return input;
     }
     
-    public static double getDoubleInput(Scanner scanner, String prompt) {
+    public static double getDoubleInput(Scanner scanner, String prompt) 
+    {
         double input = 0.00;
-        while (true) {
-            try {
+        while (true) 
+	{
+            try 
+	    {
                 System.out.print(prompt);
                 input = scanner.nextDouble();
                 scanner.nextLine(); // Consume the newline left by nextInt()
                 break; // Exit loop when input is valid
-            } catch (InputMismatchException e) {
+            } 
+	    catch (InputMismatchException e) {
                 System.out.println("Invalid input. Please enter a valid number.");
                 scanner.nextLine(); // Clear the invalid input
             }
