@@ -3,8 +3,8 @@ package com.precious.model;
 public class SavingsAccount extends BankAccount {
     private double interestRate;
 
-    public SavingsAccount(String accountNumber, double initialBalance, double interestRate) {
-        super(accountNumber, initialBalance);
+    public SavingsAccount(String accountNumber, String customerId, double initialBalance, double interestRate) {
+        super(accountNumber, initialBalance, customerId, 2);
         this.interestRate = interestRate;
     }
 
