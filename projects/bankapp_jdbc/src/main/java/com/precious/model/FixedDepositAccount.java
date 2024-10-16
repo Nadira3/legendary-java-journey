@@ -3,8 +3,8 @@ package com.precious.model;
 public class FixedDepositAccount extends BankAccount {
     private int lockPeriod;
 
-    public FixedDepositAccount(String accountNumber, double initialBalance, int lockPeriod) {
-        super(accountNumber, initialBalance);
+    public FixedDepositAccount(String accountNumber, String customerId, double initialBalance, int lockPeriod) {
+        super(accountNumber, initialBalance, customerId, 3);
         this.lockPeriod = lockPeriod;
     }
 
