@@ -32,7 +32,7 @@ public class CustomerDAO {
             System.out.println(e.getMessage());
         }
     }
-    
+
     public Customer getCustomerById(String id) {
         String sql = "SELECT * FROM Customer WHERE id = ?";
         try (Connection conn = dbUtils.getConnection();
@@ -43,8 +43,8 @@ public class CustomerDAO {
 
             if (rs.next()) {
                 return new Customer(
-                    rs.getString("id"),
                     rs.getString("name"),
+                    rs.getString("id"),
                     rs.getString("address"));
             }
 
@@ -53,10 +53,10 @@ public class CustomerDAO {
         }
         return null;
     }
-    
+
     public Customer getCustomerByAccountNumber(String accountNumber) {
         String sql = "SELECT * FROM BankAccount WHERE accountNumber = ?";
-	String customerId = null;
+        String customerId = null;
         try (Connection conn = this.dbUtils.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
@@ -66,15 +66,45 @@ public class CustomerDAO {
             if (rs.next()) {
                     customerId = rs.getString("customerId");
             }
-	    if (customerId != null) {
-		    return this.getCustomerById(customerId);
-	    }
+            if (customerId != null) {
+                    return this.getCustomerById(customerId);
+            }
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         return null;
     }
-    
-    public void updateCustomer(Customer customer) { }
+
+    public void updateCustomer(Customer customer)
+    {
+        String sql = "UPDATE Customer SET name = ?, address = ? WHERE id = ?";
+
+        try (Connection conn = this.dbUtils.getConnection();
+         PreparedStatement pstmt = conn.prepareStatement(sql))
+        {
+
+             // Set the parameters
+            pstmt.setString(1, customer.getName());
+            pstmt.setString(2, customer.getAddress());
+            pstmt.setString(3, customer.getId());
+
+            // Execute the update
+            int affectedRows = pstmt.executeUpdate();
+
+            if (affectedRows > 0)
+            {
+                System.out.println("Customer updated successfully.");
+            }
+            else
+            {
+                System.out.println("Customer with ID " + customer.getId() + " not found.");
+            }
+
+        }
+        catch (SQLException e)
+        {
+            System.out.println("Error updating customer: " + e.getMessage());
+        }
+    }
 }
