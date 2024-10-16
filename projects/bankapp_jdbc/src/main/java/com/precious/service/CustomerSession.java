@@ -40,23 +40,22 @@ public class CustomerSession {
 
             switch (choice) {
                 case 1:
-                    bankAction.createAccount(scanner, customer);
+                    bankAction.createAccount(scanner, customer, bankAccountDAO);
                     break;
                 case 2:
-                    bankAction.performDeposit(scanner, customer);
+                    bankAction.performDeposit(scanner, customer, bankAccountDAO);
                     break;
                 case 3:
-                    bankAction.performWithdrawal(scanner, customer);
+                    bankAction.performWithdrawal(scanner, customer, bankAccountDAO);
                     break;
                 case 4:
-                    bankAction.performTransfer(scanner, customer, customerService);
+                    bankAction.performTransfer(scanner, customer, customerService, bankAccountDAO);
                     break;
                 case 5:
-                    bankAction.viewAccounts(customer);
+                    bankAction.viewAccounts(customer, bankAccountDAO);
                     break;
                 case 6:
                     System.out.println("Logging out...");
-		    bankAccountDAO.updateBankAccount(customer);
                     return; // End session and go back to main menu
                 default:
                     System.out.println("Invalid choice. Try again.");
