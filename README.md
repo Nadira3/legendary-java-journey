@@ -17,7 +17,7 @@ This folder contains various exercises and tasks that focus on fundamental Java 
 
 ## Data Structures and Algorithms
 
-In this folder, you'll find implementations of various data structures and algorithms. The goal is to practice algorithmic thinking and problem-solving skills. This section includes topics like arrays, linked lists, stacks, queues, trees, sorting algorithms, and searching algorithms.
+In this folder, you'll find implementations of various data structures and algorithms. The goal is to practice algorithmic thinking and problem-solving skills. This section includes topics like arrays, linked lists, stacks, queues, trees, sorting algorithms, searching algorithms, and many more
 
 ## Projects
 
